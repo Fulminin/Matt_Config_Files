@@ -32,6 +32,7 @@
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
+	appflowy # Note taking App
 	libreoffice # test editors
     virtualbox # Virtual Environment Runner
     krita # Painting
@@ -46,7 +47,6 @@
     godot_4 # Better Game Engine
     semeru-bin # Java Development Kit
     clang_18 # C++ Compiler
-	gcc # C++ compiler
     thefuck # corrects your previous console command
     hdf5 # Data model, library, and file format for storing and managing data
 	hadoop # Cluster File System Software
