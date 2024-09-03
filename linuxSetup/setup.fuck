@@ -30,9 +30,8 @@ if [-z, /app]; then
 fi
 
 # Getting configuration files from github
-wget -O /app/packages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/packages.fuck
-wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/pythonVirtualSetup.fuck
-
+wget -O /app/packages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/packages.fuck
+wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/pythonVirtualSetup.fuck
 # Installing Packages
 source /app/packages.fuck $mana ${task[0]}
 
