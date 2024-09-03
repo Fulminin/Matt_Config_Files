@@ -1,32 +1,32 @@
 #!/bin/bash
 
-# Updating repository
-sudo apt update
+# List of packages to install
+packageList=(
+	open-21-jdk
+	clang-18
+	lidb-18
+	lid-18
+	cmake
+	python3
+	)
 
-# Installing java devleopment environment
-sudo apt install openjdk-21-jdk
+# converting to package manager
+# default apt (debian/ubuntu/raspian)
+mana=apt
+task=(install update)
 
-# Installing clang and cmake
-sudo apt install clang-18 lldb-18 lld-18 cmake
+# fedora/Redhet
+if which dnf; then
+	$mana=dnf
+# Arch
+elif which pacman; then
+	$mana=pacman
+	${task[0]}=-S
+# Unknown
+else
+	exit 1
+fi
 
-# installing wget
-sudo apt intall wget
-
-# Creating app directory if does not exist
-if [-z, /app]; then
-	sudo mkdir /app
-
-# Getting configuration files from github
-wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/pythonVirtualSetup.fuck
-
-# installing Python
-sudo apt install python3
-
-# installing python packages
-source pythonpackages.fuck /app/pyenv
-
-# Creating pyenv activation script
-echo "source /app/pyenv/bin/activate" >> ~/pyactivate
-
-# Deleting Python install script
-sudo rm /app/pythonpackages.fuck
+# Installing Packages
+for paks in ${packageList[@]}
+	sudo $mana $paks

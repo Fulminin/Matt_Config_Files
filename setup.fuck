@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Updating repository
+sudo $mana ${task[1]}
+
+# installing wget
+sudo $mana ${task[0]} wget
+
+# Creating app directory if does not exist
+if [-z, /app]; then
+	sudo mkdir /app
+fi
+
+# Getting configuration files from github
+wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/pythonVirtualSetup.fuck
+
+# installing python packages
+source pythonpackages.fuck /app/pyenv
+
+# Creating pyenv activation script
+echo "source /app/pyenv/bin/activate" >> ~/pyactivate
+
+# Deleting Python install script
+sudo rm /app/pythonpackages.fuck
