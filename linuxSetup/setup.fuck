@@ -4,6 +4,7 @@
 installLocation=pwd
 if [-z "$1" ]; then
 	installLocation=$1
+fi
 
 # Creating app directory if does not exist
 if [-z "$installLocation"]; then
