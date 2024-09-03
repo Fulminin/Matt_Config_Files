@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Creating Virtual Environment
-python -m venv $1
-
-# Activating Virtual Environment to install packages
-source $1/bin/activate
-
-# Updating pip pakcage manager
-pip install --upgrade pip
-
 # List of Packages
 packages=(
 	absl-py
@@ -97,7 +88,17 @@ packages=(
 	urllib3
 	Werkzeug
 	wheel
-	wrapt)
+	wrapt
+)
+
+# Creating Virtual Environment
+python -m venv $1
+
+# Activating Virtual Environment to install packages
+source $1/bin/activate
+
+# Updating pip pakcage manager
+pip install --upgrade pip
 
 # Installing packages
 for pak in ${packages[@]};
