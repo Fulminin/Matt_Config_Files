@@ -104,3 +104,6 @@ for pak in ${packages[@]};
 do
 	pip install $pak
 done
+
+# Creating pyenv activation script
+echo "source /app/pyenv/bin/activate" >> ~/pyactivate
