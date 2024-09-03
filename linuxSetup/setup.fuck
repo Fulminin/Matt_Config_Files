@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Where to install
+installLocation=pwd
+if [-z "$1" ]; then
+	installLocation=$1
+
+# Creating app directory if does not exist
+if [-z "$installLocation"]; then
+	sudo mkdir $installLocation
+fi
+
 # converting to package manager
 # default apt (debian/ubuntu/raspian)
 mana="apt"
@@ -12,9 +22,10 @@ if which dnf; then
 elif which pacman; then
 	$mana="pacman"
 	${task[0]}="-S"
-	$(task[1])="-Syu"
+	${task[1]}="-Syu"
 # Unknown
 else
+	echo "unable determine package manager"
 	exit 1
 fi
 
@@ -24,19 +35,14 @@ sudo $mana ${task[1]}
 # installing wget
 sudo $mana ${task[0]} wget
 
-# Creating app directory if does not exist
-if [-z, /app]; then
-	sudo mkdir /app
-fi
-
 # Getting configuration files from github
-wget -O /app/packages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/packages.fuck
-wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/pythonVirtualSetup.fuck
+wget -O $installLocation/packages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/packages.fuck
+wget -O $installLocation/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/pythonVirtualSetup.fuck
 # Installing Packages
-source /app/packages.fuck $mana ${task[0]}
+source $installLocation/packages.fuck $mana ${task[0]}
 
 # installing Python Packages
-source /app/pythonpackages.fuck /app/pyenv
+source $installLocation/pythonpackages.fuck $installLocation/pyenv
 
 # Deleting Package Scripts
-sudo rm /app/pythonpackages.fuck /app/packages.fuck
+sudo rm $installLocation/pythonpackages.fuck $installLocation/packages.fuck
