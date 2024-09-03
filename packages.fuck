@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Updating repository
+sudo apt update
+
+# Installing java devleopment environment
+sudo apt install openjdk-21-jdk
+
+# Installing clang and cmake
+sudo apt install clang-18 lldb-18 lld-18 cmake
+
+# installing wget
+sudo apt intall wget
+
+# Creating app directory if does not exist
+if [-z, /app]; then
+	sudo mkdir /app
+
+# Getting configuration files from github
+wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/pythonVirtualSetup.fuck
+
+# installing Python
+sudo apt install python3
+
+# installing python packages
+source pythonpackages.fuck /app/pyenv
+
+# Creating pyenv activation script
+echo "source /app/pyenv/bin/activate" >> ~/pyactivate
+
+# Deleting Python install script
+sudo rm /app/pythonpackages.fuck
