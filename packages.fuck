@@ -10,23 +10,6 @@ packageList=(
 	python3
 	)
 
-# converting to package manager
-# default apt (debian/ubuntu/raspian)
-mana=apt
-task=(install update)
-
-# fedora/Redhet
-if which dnf; then
-	$mana=dnf
-# Arch
-elif which pacman; then
-	$mana=pacman
-	${task[0]}=-S
-# Unknown
-else
-	exit 1
-fi
-
 # Installing Packages
 for paks in ${packageList[@]}
-	sudo $mana $paks
+	sudo $1 $2 $paks

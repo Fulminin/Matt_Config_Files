@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# converting to package manager
+# default apt (debian/ubuntu/raspian)
+mana="apt"
+task=("install" "update")
+
+# fedora/Redhet
+if which dnf; then
+	$mana="dnf"
+# Arch
+elif which pacman; then
+	$mana="pacman"
+	${task[0]}="-S"
+	$(task[1])="-Syu"
+# Unknown
+else
+	exit 1
+fi
+
 # Updating repository
 sudo $mana ${task[1]}
 
@@ -12,13 +30,14 @@ if [-z, /app]; then
 fi
 
 # Getting configuration files from github
+wget -O /app/packages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/packages.fuck
 wget -O /app/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/pythonVirtualSetup.fuck
 
-# installing python packages
-source pythonpackages.fuck /app/pyenv
+# Installing Packages
+source /app/packages.fuck $mana ${task[0]}
 
-# Creating pyenv activation script
-echo "source /app/pyenv/bin/activate" >> ~/pyactivate
+# installing Python Packages
+source /app/pythonpackages.fuck /app/pyenv
 
-# Deleting Python install script
-sudo rm /app/pythonpackages.fuck
+# Deleting Package Scripts
+sudo rm /app/pythonpackages.fuck /app/packages.fuck
