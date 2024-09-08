@@ -1,6 +1,6 @@
-	open-21-jdk
-	clang-18
-	lidb-18
-	lid-18
-	cmake
-	python3 
+open-21-jdk
+clang-18
+lidb-18
+lid-18
+cmake
+python3 
