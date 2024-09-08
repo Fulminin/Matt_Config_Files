@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# List of packages to install
-packageList=(
-	open-21-jdk
-	clang-18
-	lidb-18
-	lid-18
-	cmake
-	python3
-	)
+# Taking Package names from packageList.fuck
+# This is so we have a test file which only consists of the package names
 
 # Installing Packages
-for paks in ${packageList[@]}
-	sudo $1 $2 $paks
+while IFS= read -r line;
+do
+	sudo $1 $2 $line
+end < packageList.fuck
