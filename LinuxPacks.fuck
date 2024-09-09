@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Input: source LinuxPacks.fuck [Install Location]
+
+# TODO: Need to add a tag system to modify default locations
+#source LinuxPacks.fuck -i [Install Location] -g [Github_Link]
+
+# Where to install
+installLocation=pwd
+if [-z "$1" ]; then
+	installLocation=$1
+
+# Creating app directory if does not exist
+if [-z "$installLocation"]; then
+	sudo mkdir $installLocation
+fi
+
+# Download File Link
+downloadLoc="https://github.com/Fulminin/Matt_Config_Files/tree/main/linuxSetup"
+
+# converting to package manager
+# default apt (debian/ubuntu/raspian)
+mana="apt"
+task=("install" "update")
+
+# fedora/Redhet
+if which dnf; then
+	$mana="dnf"
+# Arch
+elif which pacman; then
+	$mana="pacman"
+	${task[0]}="-S"
+	${task[1]}="-Syu"
+# Unknown
+else
+	echo "unable determine package manager"
+	exit 2
+fi
+
+# Updating repository
+sudo $mana ${task[1]}
+
+# installing wget
+sudo $mana ${task[0]} wget
+
+# Starting Setup
+echo "Downloading Setup Files"
+wget -O $installLocation/linuxSetup https://github.com/Fulminin/Matt_Config_Files/tree/main/linuxSetup # getting files from github
+echo "Starting Install"
+source $installLocation/setup.fuck $installLocation $mana ${task[@]}
+echo "Ending install"
+
+# Deleting Package Scripts
+echo "Deleting Setup Files"
+sudo rmdir -r $installLocation/linuxSetup
+echo "Complete Installation"
+
+# Exiting Scriipt
+exit 0
