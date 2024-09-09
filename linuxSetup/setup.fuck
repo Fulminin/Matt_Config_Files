@@ -1,49 +1,13 @@
 #!/bin/bash
 
-# Where to install
-installLocation=pwd
-if [-z "$1" ]; then
-	installLocation=$1
-fi
+# Input: source setup.fuck [Install_Location] [Package_Manager] [Command_Array]
 
-# Creating app directory if does not exist
-if [-z "$installLocation"]; then
-	sudo mkdir $installLocation
-fi
+# Installing Packages (Distro Package Manager)
+echo "Starting Distro Setup"
+source $1/linuxSetup/packages.fuck $2 ${3[0]}
+echo "Complete Distro Setup"
 
-# converting to package manager
-# default apt (debian/ubuntu/raspian)
-mana="apt"
-task=("install" "update")
-
-# fedora/Redhet
-if which dnf; then
-	$mana="dnf"
-# Arch
-elif which pacman; then
-	$mana="pacman"
-	${task[0]}="-S"
-	${task[1]}="-Syu"
-# Unknown
-else
-	echo "unable determine package manager"
-	exit 1
-fi
-
-# Updating repository
-sudo $mana ${task[1]}
-
-# installing wget
-sudo $mana ${task[0]} wget
-
-# Getting configuration files from github
-wget -O $installLocation/packages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/packages.fuck
-wget -O $installLocation/pythonpackages.fuck https://github.com/Fulminin/Matt_Config_Files/blob/main/linuxSetup/pythonVirtualSetup.fuck
-# Installing Packages
-source $installLocation/packages.fuck $mana ${task[0]}
-
-# installing Python Packages
-source $installLocation/pythonpackages.fuck $installLocation/pyenv
-
-# Deleting Package Scripts
-sudo rm $installLocation/pythonpackages.fuck $installLocation/packages.fuck
+# installing Python Packages (Pip Package Manager)
+echo "Starting Python Setup"
+source $1/linuxSetup/pythonpackages.fuck $1/pyenv
+echo "Complete Python Setup"
