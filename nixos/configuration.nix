@@ -13,6 +13,10 @@
 	  ./service-configuration.nix
 	  # Include what programs and packages to include
 	  ./packages-configuration.nix
+	  # Include User Configurations
+	  ./user-configuration.nix
+	  # Include Localisation Configuration
+	  ./localisation-configuration.nix
     ];
 
   # Bootloader.
@@ -23,7 +27,7 @@
 
   # Networking
   networking = {
-    hostName = "PainBase"; # Define your hostname.
+    hostName = "WifuBox"; # Define your hostname.
     networkmanager.enable = true; # Enable networking
 
     # wireless.enable = true; # Enables wireless support via wpa_supplicant.
@@ -33,26 +37,6 @@
     # 	default = "http://user:password@proxy:port/";
       # 	noProxy = "127.0.0.1,localhost,internal.domain";
     # };
-  };
-
-  # Set your time zone.
-  time.timeZone = "Australia/Sydney";
-
-  # Localisation
-  i18n = {
-    # Select internationalisation properties.
-    defaultLocale = "en_GB.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_AU.UTF-8";
-      LC_IDENTIFICATION = "en_AU.UTF-8";
-      LC_MEASUREMENT = "en_AU.UTF-8";
-      LC_MONETARY = "en_AU.UTF-8";
-      LC_NAME = "en_AU.UTF-8";
-      LC_NUMERIC = "en_AU.UTF-8";
-      LC_PAPER = "en_AU.UTF-8";
-      LC_TELEPHONE = "en_AU.UTF-8";
-      LC_TIME = "en_AU.UTF-8";
-    };
   };
 
   # Hardware
@@ -67,9 +51,12 @@
   
   # Security
   security.rtkit.enable = true;
+
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
   
   # Virtualisation settings
-  virtualisation.virtualbox = {
+  virtualisation.virtualbox = {  # VirtualBox Settings
     host = {
       enable = true;
       enableExtensionPack = true;
@@ -77,36 +64,9 @@
     guest = {
       enable = true;
       draganddrop = true;
+      clipboard = true;
     };
   };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users = {
-    users.matt = {
-      isNormalUser = true;
-      description = "matt";
-      extraGroups = [ "networkmanager" "wheel" "vboxusers"];
-      packages = with pkgs; [
-        kdePackages.kate
-      #  thunderbird
-      ];
-    };
-    defaultUserShell = pkgs.zsh; # Default Shell
-    # extraGroups.vboxusers.members = [ "matt" ]; #vbox members
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

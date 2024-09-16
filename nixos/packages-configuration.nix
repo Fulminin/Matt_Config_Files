@@ -17,21 +17,31 @@
 			  ll = "ls -l";
 			  update = "sudo nixos-rebuild switch";
 		  };
-      # Install OhMyZsh
-  		ohMyZsh = {
+        # Install OhMyZsh
+          ohMyZsh = {
     		enable = true;
     		plugins = [ "git" "thefuck" ];
     		theme = "jispwoso";
 		  };
   	};
+
+  	thefuck.enable = true; # Install thefuck console corrent tool
     firefox.enable = true; # Install FireFox
+
+    # GitHub Configuration
+    git = {
+      enable = true;
+      config = {
+        user = {
+          name = "fulminin";
+          email = "mattcarlile590@gmail.com";
+        };
+      };
+    };
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # Installing System Packages
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
 	appflowy # Note taking App
 	libreoffice # test editors
     virtualbox # Virtual Environment Runner
@@ -39,7 +49,6 @@
     gimp # Image Editing
     blender # #D modelling
     gparted # To manage Partitions/format partitions
-    git # Git Version Control
     discord # Discord Chat
     vscode # Visual Studio Code
     android-studio # Android Studio Code
@@ -47,10 +56,12 @@
     godot_4 # Better Game Engine
     semeru-bin # Java Development Kit
     clang_18 # C++ Compiler
-    thefuck # corrects your previous console command
     hdf5 # Data model, library, and file format for storing and managing data
 	hadoop # Cluster File System Software
-    (python3.withPackages (pkgs: with pkgs; [
+	hbase # Big Data Store
+	pig # high level language for Apache Hadoop
+	spark # Spark Data modeling (in-memory)
+    (python3.withPackages (pkgs: with pkgs; [ # python scripting language
 	  pip # python package manager
 	  ipykernel # python kernel for jupyter
 	  h5py # some kind of interface for hdf5
@@ -63,6 +74,8 @@
       scikitlearn # Scikit-Learn Data Modelling
       spark # Spark Data modeling (in-memory)
       hadoop # Hadood Data modeling (persistant storage)
+      hbase # Big Data Store
+      pig # high level language for Apache Hadoop
     #   torch # PyTorch machine learning
 	#   torchaudio # PyTorch Audio machine learning
 	#   torchvision # PyTorch Vision machine learning
@@ -70,7 +83,7 @@
       keras # Keras Machine Learning
       matplotlib # Data Plotting
       seaborn # Data Plotting
-	])) # python scripting language
+	]))
     
   ];
   
@@ -89,5 +102,19 @@
                 _: { 
 									src = builtins.fetchTarball https://update.code.visualstudio.com/1.92.2/linux-x64/stable; 
 								});}) 
+                    # Installing Hive
+                    (self: super: {
+                    Hive = super.Hive.overrideAttrs (
+                    _:{
+                                    src = builtins.fetchTarball https://dlcdn.apache.org/hive/hive-4.0.0/apache-hive-4.0.0-src.tar.gz;
+                                });})
   ];
 } 
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
